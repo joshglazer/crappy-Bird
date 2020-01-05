@@ -18,6 +18,11 @@
         "url": "./src/assets/images/bird.png"
       },
       {
+        "type": "image",
+        "key": "screen-clearer",
+        "url": "./src/assets/images/screen-clearer.png"
+      },
+      {
         "type": "spritesheet",
         "key": "pipe",
         "url": "./src/assets/images/pipe.png",
