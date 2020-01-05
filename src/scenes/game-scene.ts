@@ -105,23 +105,26 @@ export class GameScene extends Phaser.Scene {
     let hole = Math.floor(Math.random() * 5) + 1;
 
     // velocity should be a random number between 150 and 250
-    let velocity = Math.floor(Math.random() * 100) + 150;
+    const velocity = Math.floor(Math.random() * 100) + 150;
+
+    // one in every 20 pipes should be a wacky pipe, which means that each piece moves at it's own speed
+    const isWacky = (Math.floor(Math.random() * 20) + 1) === 20;
 
     // add 6 pipes with one big hole at position hole and hole + 1
     for (let i = 0; i < 10; i++) {
       if (i !== hole && i !== hole + 1 && i !== hole + 2) {
         if (i === hole - 1) {
-          this.addPipe(400, i * 60, 0, velocity);
+          this.addPipe(400, i * 60, 0, velocity, isWacky);
         } else if (i === hole + 3) {
-          this.addPipe(400, i * 60, 1, velocity);
+          this.addPipe(400, i * 60, 1, velocity, isWacky);
         } else {
-          this.addPipe(400, i * 60, 2, velocity);
+          this.addPipe(400, i * 60, 2, velocity, isWacky);
         }
       }
     }
   }
 
-  private addPipe(x: number, y: number, frame: number, velocity: number): void {
+  private addPipe(x: number, y: number, frame: number, velocity: number, isWacky: boolean): void {
     // create a new pipe at the position x and y and add it to group
     this.pipes.add(
       new Pipe(
@@ -132,7 +135,8 @@ export class GameScene extends Phaser.Scene {
           frame: frame,
           key: "pipe",
         },
-        velocity
+        velocity,
+        isWacky
       )
     );
   }
