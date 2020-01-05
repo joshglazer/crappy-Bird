@@ -7,12 +7,14 @@
 
 import { Bird } from "../objects/bird";
 import { Pipe } from "../objects/pipe";
+import { ScreenClearer } from "../objects/screen-clearer";
 
 export class GameScene extends Phaser.Scene {
   private bird: Bird;
   private pipes: Phaser.GameObjects.Group;
   private background: Phaser.GameObjects.TileSprite;
   private scoreText: Phaser.GameObjects.BitmapText;
+  private screenClearer: ScreenClearer
 
   constructor() {
     super({
@@ -66,12 +68,33 @@ export class GameScene extends Phaser.Scene {
       callbackScope: this,
       loop: true
     });
+
+    this.time.addEvent({
+      delay: 15000,
+      callback: this.addScreenClearer,
+      callbackScope:this,
+      loop: true,
+    })
   }
 
   update(): void {
     if (!this.bird.getDead()) {
       this.background.tilePositionX += 4;
       this.bird.update();
+
+      // check if the bird has hit the screen clearer
+      this.physics.overlap(
+        this.bird,
+        this.screenClearer,
+        function() {
+          this.pipes.clear(true, true);
+          this.screenClearer.destroy();
+        },
+        null,
+        this
+      );
+      
+      // check if the bird has hit a pipe
       this.physics.overlap(
         this.bird,
         this.pipes,
@@ -82,6 +105,8 @@ export class GameScene extends Phaser.Scene {
         this
       );
     } else {
+
+      // When the game ends, stop the movement of all objects
       Phaser.Actions.Call(
         this.pipes.getChildren(),
         function(pipe) {
@@ -90,6 +115,11 @@ export class GameScene extends Phaser.Scene {
         this
       );
 
+      if (this.screenClearer && this.screenClearer.body) {
+        this.screenClearer.body.setVelocityX(0);
+      }
+
+      // When the game ends and the bird falls off the bottom of the screen, 
       if (this.bird.y > this.sys.canvas.height) {
         this.scene.restart();
       }
@@ -122,6 +152,21 @@ export class GameScene extends Phaser.Scene {
         }
       }
     }
+  }
+
+  private addScreenClearer(): void {
+    // set a random y value between 0 and 50 less than the height, and x value to the right of the screen
+    const x = 400;
+    const height = 50;
+    const y = Math.floor(Math.random() * (this.sys.canvas.height - height)) + 1;
+
+    this.screenClearer = new ScreenClearer({
+      scene: this,
+      x: x,
+      y: y,
+      key: "screen-clearer"
+    });
+
   }
 
   private addPipe(x: number, y: number, frame: number, velocity: number, isWacky: boolean): void {
