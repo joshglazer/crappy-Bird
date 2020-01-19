@@ -1,10 +1,12 @@
-export class GameOverScene extends Phaser.Scene {
+import { Bird } from "../objects/bird";
 
-    private restartKey: Phaser.Input.Keyboard.Key;
+export class IntroScene extends Phaser.Scene {
+
+    private startKey: Phaser.Input.Keyboard.Key;
 
     constructor() { 
       super({
-        key: "GameOverScene"
+        key: "IntroScene"
       });
     }
 
@@ -25,39 +27,36 @@ export class GameOverScene extends Phaser.Scene {
         .tileSprite(0, 0, 390, 600, "background")
         .setOrigin(0, 0);
   
-      // Game Over Title
+      // Game Title
       this.add
         .text(
           this.sys.canvas.width / 2,
           50,
-          "GAME OVER",
+          "CRAPPY BIRD",
         )
         .setOrigin(0.5)
         .setAlign('center')
-        .setFontSize(60);
+        .setFontSize(50);
 
-      // Your Score Title
+      // Game Subtitle
       this.add
         .text(
           this.sys.canvas.width / 2,
-          150,
-          "Your Score",
+          90,
+          "A \"Flappy Bird\" Rip-off",
         )
         .setOrigin(0.5)
         .setAlign('center')
-        .setFontSize(40);
+        .setFontSize(20);
 
-      // Your Score Number
-      this.add
-        .bitmapText(
-          this.sys.canvas.width / 2 - 14,
-          200,
-          "font",
-          this.registry.values.score
-        )
-        .setDepth(2);
+      // Bird
+      this.add.image(
+        this.sys.canvas.width / 2,
+        250,
+        "bird",
+      ).setScale(8);
 
-      // Restart Instructions
+      // Start Instructions
       this.add
         .text(
           this.sys.canvas.width / 2,
@@ -69,13 +68,13 @@ export class GameOverScene extends Phaser.Scene {
         .setFontSize(20);
 
       // Register spacebar as restart
-      this.restartKey = this.input.keyboard.addKey(
+      this.startKey = this.input.keyboard.addKey(
         Phaser.Input.Keyboard.KeyCodes.SPACE
       );
     }
 
     update(): void {
-      if (this.restartKey.isDown) {
+      if (this.startKey.isDown) {
         this.scene.start('GameScene');
       }
 
