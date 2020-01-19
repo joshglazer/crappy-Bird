@@ -121,7 +121,8 @@ export class GameScene extends Phaser.Scene {
 
       // When the game ends and the bird falls off the bottom of the screen, 
       if (this.bird.y > this.sys.canvas.height) {
-        this.scene.restart();
+        this.scene.stop('GameScene');
+        this.scene.switch('GameOverScene');
       }
     }
   }
