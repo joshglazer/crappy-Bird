@@ -62,7 +62,7 @@ export class GameOverScene extends Phaser.Scene {
         .text(
           this.sys.canvas.width / 2,
           this.sys.canvas.height - 50,
-          "Press [spacebar] to play again",
+          "Press [spacebar] or [tap]\n to play again",
         )
         .setOrigin(0.5)
         .setAlign('center')
@@ -72,12 +72,19 @@ export class GameOverScene extends Phaser.Scene {
       this.restartKey = this.input.keyboard.addKey(
         Phaser.Input.Keyboard.KeyCodes.SPACE
       );
+
+      this.input.on('pointerdown', (pointer) => {
+        this.restartGame();
+      });
     }
 
     update(): void {
       if (this.restartKey.isDown) {
-        this.scene.start('GameScene');
+        this.restartGame();
       }
+    }
 
+    private restartGame() {
+      this.scene.start('GameScene');
     }
   }

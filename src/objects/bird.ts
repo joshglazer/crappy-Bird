@@ -48,6 +48,10 @@ export class Bird extends Phaser.GameObjects.Sprite {
       this.angle += 2;
     }
 
+    this.scene.input.on('pointerdown', (pointer) => {
+      this.jumpKey.isDown = true;
+    });
+
     // handle input
     if (this.jumpKey.isDown && !this.isFlapping) {
       // flap
@@ -59,6 +63,7 @@ export class Bird extends Phaser.GameObjects.Sprite {
         duration: 150,
         ease: "Power0"
       });
+      this.jumpKey.isDown = false;
     } else if (this.jumpKey.isUp && this.isFlapping) {
       this.isFlapping = false;
     }
