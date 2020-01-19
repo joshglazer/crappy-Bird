@@ -6,6 +6,7 @@
  */
 
 import "phaser";
+import { IntroScene } from "./scenes/intro-scene";
 import { GameScene } from "./scenes/game-scene";
 import { GameOverScene } from "./scenes/game-over-scene";
 
@@ -13,7 +14,7 @@ const config: GameConfig = {
   width: 390,
   height: 600,
   parent: "game",
-  scene: [GameScene, GameOverScene],
+  scene: [IntroScene, GameScene, GameOverScene],
   input: {
     keyboard: true
   },
