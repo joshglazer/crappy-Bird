@@ -61,7 +61,7 @@ export class IntroScene extends Phaser.Scene {
         .text(
           this.sys.canvas.width / 2,
           this.sys.canvas.height - 50,
-          "Press [spacebar] to play again",
+          "Press [spacebar] or [tap]\nto play",
         )
         .setOrigin(0.5)
         .setAlign('center')
