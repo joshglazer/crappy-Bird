@@ -71,12 +71,19 @@ export class IntroScene extends Phaser.Scene {
       this.startKey = this.input.keyboard.addKey(
         Phaser.Input.Keyboard.KeyCodes.SPACE
       );
+
+      this.input.on('pointerdown', (pointer) => {
+        this.startGame();
+      });
     }
 
     update(): void {
       if (this.startKey.isDown) {
-        this.scene.start('GameScene');
+        this.startGame();
       }
+    }
 
+    private startGame() {
+      this.scene.start('GameScene');
     }
   }
